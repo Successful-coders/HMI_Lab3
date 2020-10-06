@@ -32,7 +32,7 @@ namespace HMI_Lab3
         /// </summary>
         private void InitializeComponent()
         {
-            this.categoryListView = new System.Windows.Forms.ListView();
+            this.categoryListView = new DragListView();
             this.Description = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Cost = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
@@ -54,12 +54,6 @@ namespace HMI_Lab3
             this.categoryListView.UseCompatibleStateImageBehavior = false;
             this.categoryListView.View = System.Windows.Forms.View.Details;
             this.categoryListView.InsertionMark.Color = Color.BlueViolet;
-            this.categoryListView.DoubleBuffered(true);
-            this.categoryListView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.categoryListView_ItemDrag);
-            this.categoryListView.DragDrop += new System.Windows.Forms.DragEventHandler(this.categoryListView_DragDrop);
-            this.categoryListView.DragEnter += new System.Windows.Forms.DragEventHandler(this.categoryListView_DragEnter);
-            this.categoryListView.DragOver += new System.Windows.Forms.DragEventHandler(this.categoryListView_DragOver);
-            this.categoryListView.DragLeave += new System.EventHandler(this.categoryListView_DragLeave);
             this.categoryListView.Resize += new System.EventHandler(this.categoryListView_Resize);
             // 
             // Description
@@ -90,7 +84,7 @@ namespace HMI_Lab3
 
         #endregion
 
-        private System.Windows.Forms.ListView categoryListView;
+        private DragListView categoryListView;
         private System.Windows.Forms.ColumnHeader Description;
         private System.Windows.Forms.ColumnHeader Cost;
     }
