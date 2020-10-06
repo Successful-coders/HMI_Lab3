@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace HMI_Lab3
 {
@@ -30,27 +32,55 @@ namespace HMI_Lab3
         /// </summary>
         private void InitializeComponent()
         {
-            this.categoryList = new System.Windows.Forms.ListBox();
+            this.categoryListView = new System.Windows.Forms.ListView();
+            this.Description = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Cost = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
-            // categoryList
+            // categoryListView
             // 
-            this.categoryList.FormattingEnabled = true;
-            this.categoryList.Location = new System.Drawing.Point(12, 43);
-            this.categoryList.Name = "categoryList";
-            this.categoryList.Size = new System.Drawing.Size(776, 277);
-            this.categoryList.TabIndex = 0;
-            this.categoryList.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            this.categoryList.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBox1_DragDrop);
-            this.categoryList.DragOver += new System.Windows.Forms.DragEventHandler(this.listBox1_DragOver);
-            this.categoryList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDown);
+            this.categoryListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Description,
+            this.Cost});
+            this.categoryListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.categoryListView.AllowDrop = true;
+            this.categoryListView.HideSelection = false;
+            this.categoryListView.HoverSelection = true;
+            this.categoryListView.Location = new System.Drawing.Point(0, 0);
+            this.categoryListView.MultiSelect = false;
+            this.categoryListView.Name = "categoryListView";
+            this.categoryListView.Size = new System.Drawing.Size(800, 450);
+            this.categoryListView.TabIndex = 0;
+            this.categoryListView.UseCompatibleStateImageBehavior = false;
+            this.categoryListView.View = System.Windows.Forms.View.Details;
+            this.categoryListView.InsertionMark.Color = Color.BlueViolet;
+            this.categoryListView.DoubleBuffered(true);
+            this.categoryListView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.categoryListView_ItemDrag);
+            this.categoryListView.DragDrop += new System.Windows.Forms.DragEventHandler(this.categoryListView_DragDrop);
+            this.categoryListView.DragEnter += new System.Windows.Forms.DragEventHandler(this.categoryListView_DragEnter);
+            this.categoryListView.DragOver += new System.Windows.Forms.DragEventHandler(this.categoryListView_DragOver);
+            this.categoryListView.DragLeave += new System.EventHandler(this.categoryListView_DragLeave);
+            this.categoryListView.Resize += new System.EventHandler(this.categoryListView_Resize);
+            // 
+            // Description
+            // 
+            this.Description.Tag = "1";
+            this.Description.Text = "Имя";
+            this.Description.Width = 220;
+            // 
+            // Cost
+            // 
+            this.Cost.Tag = "2";
+            this.Cost.Text = "Цена";
+            this.Cost.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.Cost.Width = 573;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.categoryList);
+            this.Controls.Add(this.categoryListView);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -60,7 +90,9 @@ namespace HMI_Lab3
 
         #endregion
 
-        private System.Windows.Forms.ListBox categoryList;
+        private System.Windows.Forms.ListView categoryListView;
+        private System.Windows.Forms.ColumnHeader Description;
+        private System.Windows.Forms.ColumnHeader Cost;
     }
 }
 
