@@ -17,6 +17,7 @@ namespace HMI_Lab3
 
         public Form1()
         {
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             InitializeComponent();
         }
 
@@ -45,7 +46,7 @@ namespace HMI_Lab3
                 new Item("Denture Parcelain teeth", 350),
             }));
 
-            categoryListView.AllowItemDrag = true;
+            categoryListView.AllowItemDrag = false;
 
             foreach (var category in categories)
             {
@@ -85,6 +86,24 @@ namespace HMI_Lab3
             }
 
             isResizing = false;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if(editButton.Checked)
+            {
+                editButton.ImageIndex = 0;
+                this.editButton.FlatAppearance.CheckedBackColor = Color.FromArgb(80, 90, 252);
+                this.editButton.ForeColor = Color.White;
+            }
+            else
+            {
+                editButton.ImageIndex = 1;
+                this.editButton.FlatAppearance.CheckedBackColor = Color.White;
+                this.editButton.ForeColor = Color.Black;
+            }
+
+            categoryListView.AllowItemDrag = editButton.Checked;
         }
     }
 }
