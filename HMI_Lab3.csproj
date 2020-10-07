@@ -48,22 +48,23 @@
   <ItemGroup>
     <Compile Include="CancelListViewItemDragEventArgs.cs" />
     <Compile Include="Category.cs" />
+    <Compile Include="ControlExt.cs" />
     <Compile Include="DragListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="PriceList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="PriceList.Designer.cs">
+      <DependentUpon>PriceList.cs</DependentUpon>
     </Compile>
     <Compile Include="InsertionMode.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ListViewItemDragEventArgs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="PriceList.resx">
+      <DependentUpon>PriceList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -91,7 +92,11 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="Resources\cancel.png" />
     <Content Include="Resources\edit1.png" />
+    <Content Include="Resources\plus.png" />
+    <Content Include="Resources\plus16.png" />
+    <Content Include="Resources\plusWhite.png" />
     <None Include="Resources\editPressed.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

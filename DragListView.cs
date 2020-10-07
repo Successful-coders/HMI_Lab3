@@ -128,6 +128,19 @@ namespace HMI_Lab3
             base.OnDragDrop(drgevent);
         }
 
+        internal bool HasGroupName(string groupName)
+        {
+            foreach (ListViewGroup item in Groups)
+            {
+                if(item.Header == groupName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Raises the <see cref="E:System.Windows.Forms.Control.DragLeave" /> event.
         /// </summary>
