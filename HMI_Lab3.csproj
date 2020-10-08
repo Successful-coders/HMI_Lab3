@@ -52,6 +52,7 @@
     <Compile Include="DragListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ListViewItemCollectionExt.cs" />
     <Compile Include="PriceList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="ListViewColumnSorter.cs" />
     <Content Include="Resources\cancel.png" />
     <Content Include="Resources\edit1.png" />
     <Content Include="Resources\plus.png" />

@@ -17,8 +17,8 @@ namespace HMI_Lab3
         #region Instance Fields
 
         private bool _allowItemDrag;
-
         private Color _insertionLineColor;
+        private ListViewColumnSorter lvwColumnSorter = new ListViewColumnSorter();
 
         #endregion
 
@@ -32,6 +32,11 @@ namespace HMI_Lab3
             this.DoubleBuffered = true;
             this.InsertionLineColor = Color.Black;
             this.InsertionIndex = -1;
+
+            //Sort
+            //lvwColumnSorter.Order = SortOrder.Ascending;
+            //lvwColumnSorter.SortColumn = 0;
+            //ListViewItemSorter = lvwColumnSorter;
         }
 
         #endregion
@@ -113,8 +118,12 @@ namespace HMI_Lab3
                                 dragItem.Group = dropItem.Group;
                                 this.Items.Insert(dropIndex, dragItem);
                                 this.SelectedItem = dragItem;
+
+                                Items.RemoveEmpty(dropItem.Group);
                             }
                         }
+
+                        //Sort();
                     }
                 }
                 finally
@@ -139,6 +148,34 @@ namespace HMI_Lab3
             }
 
             return false;
+        }
+
+        protected override void OnColumnClick(ColumnClickEventArgs e)
+        {
+            base.OnColumnClick(e);
+
+            // Determine if clicked column is already the column that is being sorted.
+            if (e.Column == lvwColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                {
+                    lvwColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                lvwColumnSorter.SortColumn = e.Column;
+                lvwColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            Sort();
         }
 
         /// <summary>

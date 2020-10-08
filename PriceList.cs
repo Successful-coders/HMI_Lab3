@@ -60,62 +60,79 @@ namespace HMI_Lab3
                 }
             }
 
+            categoryListView.Controls.Add(addCategoryPanel);
+
+            categoryListView.ItemDragDrop += CategoryListView_ItemDragDrop;
+
             categoryListView_Resize(categoryListView, e);
         }
 
+
         #region AddNewCategory
 
-        private void ShowNewCategoryPanel()
+        private void SetNewCategoryPanel(bool isEnable)
         {
-            Point position = categoryListView.Items[categoryListView.Items.Count - 1].Position;
-            position.Y += addCategoryPanel.Size.Height;
-            addCategoryPanel.Location = position;
+            if (isEnable)
+            {
+                Point position = categoryListView.Items[0].Position;
+                foreach (ListViewItem item in categoryListView.Items)
+                {
+                    position.Y = Math.Max(item.Position.Y, position.Y);
+                }
+                position.Y += addCategoryPanel.Size.Height;
+                addCategoryPanel.Location = position;
 
-            categoryNameTextBox.Text = "";
+                categoryNameTextBox.Text = "";
+            }
 
-            categoryListView.Controls.Add(addCategoryPanel);
-
-            addCategoryPanel.Show();
+            addCategoryPanel.Visible = isEnable;
         }
         private void AddCategoryButton_Click(object sender, EventArgs e)
         {
             AddNewCategory(categoryNameTextBox.Text);
 
-            ShowNewCategoryPanel();
+            SetNewCategoryPanel(true);
         }
         private void categoryNameTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                AddNewCategory((sender as TextBox).Text);
+                bool isSucessful = AddNewCategory((sender as TextBox).Text);
 
                 //HideNewItemButtons();
                 //ShowNewItemButtons();
-                ShowNewCategoryPanel();
+                if (isSucessful)
+                {
+                    SetNewCategoryPanel(true);
+                }
 
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
         }
-        private void AddNewCategory(string name)
+        private bool AddNewCategory(string name)
         {
             if (string.IsNullOrEmpty(categoryNameTextBox.Text))
             {
-                //message about empty textbox
                 MessageBox.Show("Вы ввели пустое имя", "Сообщение", MessageBoxButtons.OK,
                     MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+                return false;
             }
             else if (categoryListView.HasGroupName(categoryNameTextBox.Text))
             {
-                //message about existing of item with the same name
                 MessageBox.Show("Категория с таким именем уже существует", "Сообщение", MessageBoxButtons.OK,
                     MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+
+                return false;
             }
             else
             {
                 ListViewGroup newGroup = new ListViewGroup(name);
                 categoryListView.Groups.Add(newGroup);
                 categoryListView.Items.Add(new ListViewItem("", 0, newGroup));
+
+                return true;
             }
         }
         #endregion
@@ -172,14 +189,13 @@ namespace HMI_Lab3
 
         private void editButton_CheckedChanged(object sender, EventArgs e)
         {
-            if(editButton.Checked)
+            if (editButton.Checked)
             {
                 editButton.ImageIndex = 0;
-                editButton.FlatAppearance.CheckedBackColor = Color.FromArgb(80, 90, 252);
+                editButton.FlatAppearance.CheckedBackColor = Color.CornflowerBlue;
                 editButton.ForeColor = Color.White;
 
                 //ShowNewItemButtons();
-                ShowNewCategoryPanel();
             }
             else
             {
@@ -188,9 +204,10 @@ namespace HMI_Lab3
                 editButton.ForeColor = Color.Black;
 
                 //HideNewItemButtons();
-                addCategoryPanel.Hide();
+                categoryListView.Items.RemoveEmpties();
             }
 
+            SetNewCategoryPanel(editButton.Checked);
             categoryListView.AllowItemDrag = editButton.Checked;
         }
 
@@ -217,6 +234,10 @@ namespace HMI_Lab3
             }
 
             isResizing = false;
+        }
+        private void CategoryListView_ItemDragDrop(object sender, ListViewItemDragEventArgs e)
+        {
+            SetNewCategoryPanel(true);
         }
     }
 }
