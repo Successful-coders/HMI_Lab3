@@ -21,16 +21,5 @@ namespace HMI_Lab3
                 }
             }
         }
-        public static void RemoveEmpties(this ListViewItemCollection list)
-        {
-            foreach (ListViewItem item in list)
-            {
-                if(item.Text == "")
-                {
-                    list.Remove(item);
-                    return;
-                }
-            }
-        }
     }
 }

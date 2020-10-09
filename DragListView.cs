@@ -67,6 +67,12 @@ namespace HMI_Lab3
         [Category("Drag Drop")]
         public event EventHandler<CancelListViewItemDragEventArgs> ItemDragging;
 
+        /// <summary>
+        /// Occurs when the user begins dragging an item.
+        /// </summary>
+        [Category("Drag Drop")]
+        public event EventHandler<ListViewItemDragEventArgs> ItemDragged;
+
         #endregion
 
         #region Overridden Methods
@@ -120,6 +126,7 @@ namespace HMI_Lab3
                                 this.SelectedItem = dragItem;
 
                                 Items.RemoveEmpty(dropItem.Group);
+                                RemoveEmpty();
                             }
                         }
 
@@ -135,6 +142,8 @@ namespace HMI_Lab3
             }
 
             base.OnDragDrop(drgevent);
+
+            OnItemDragged(EventArgs.Empty as ListViewItemDragEventArgs);
         }
 
         internal bool HasGroupName(string groupName)
@@ -148,6 +157,46 @@ namespace HMI_Lab3
             }
 
             return false;
+        }
+        internal bool HasItem(string itemText, ListViewGroup group)
+        {
+            foreach (ListViewItem item in group.Items)
+            {
+                if(item.Text == itemText)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void RemoveEmpty()
+        {
+            for (int i = 0; i < Groups.Count; i++)
+            {
+                if (Groups[i].Header == "")
+                {
+                    Groups.RemoveAt(i);
+                    i--;
+                }
+                else
+                {
+                    for (int j = 0; j < Groups[i].Items.Count; j++)
+                    {
+                        if (Groups[i].Items[j].Text == "")
+                        {
+                            Groups[i].Items.RemoveAt(j);
+                            j--;
+                        }
+                    }
+                    if(Groups[i].Items.Count == 0)
+                    {
+                        Groups.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
         }
 
         protected override void OnColumnClick(ColumnClickEventArgs e)
@@ -416,6 +465,18 @@ namespace HMI_Lab3
             EventHandler<CancelListViewItemDragEventArgs> handler;
 
             handler = this.ItemDragging;
+
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        protected virtual void OnItemDragged(ListViewItemDragEventArgs e)
+        {
+            EventHandler<ListViewItemDragEventArgs> handler;
+
+            handler = this.ItemDragged;
 
             if (handler != null)
             {

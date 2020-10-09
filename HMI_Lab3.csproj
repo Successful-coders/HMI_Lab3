@@ -52,6 +52,9 @@
     <Compile Include="DragListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="HintTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ListViewItemCollectionExt.cs" />
     <Compile Include="PriceList.cs">
       <SubType>Form</SubType>

@@ -14,6 +14,7 @@ namespace HMI_Lab3
     {
         private bool isResizing = false;
         private List<Category> categories = new List<Category>();
+        private List<Panel> newItemPanels = new List<Panel>();
 
 
         public PriceList()
@@ -49,20 +50,11 @@ namespace HMI_Lab3
 
             categoryListView.AllowItemDrag = false;
 
-            foreach (var category in categories)
-            {
-                ListViewGroup group = new ListViewGroup(category.Name);
-                categoryListView.Groups.Add(group);
-
-                foreach (var item in category.Items)
-                {
-                    categoryListView.Items.Add(new ListViewItem(item.Name, item.Cost, group));
-                }
-            }
+            LoadFromDataBase();
 
             categoryListView.Controls.Add(addCategoryPanel);
 
-            categoryListView.ItemDragDrop += CategoryListView_ItemDragDrop;
+            categoryListView.ItemDragged += CategoryListView_ItemDragged;
 
             categoryListView_Resize(categoryListView, e);
         }
@@ -130,7 +122,7 @@ namespace HMI_Lab3
             {
                 ListViewGroup newGroup = new ListViewGroup(name);
                 categoryListView.Groups.Add(newGroup);
-                categoryListView.Items.Add(new ListViewItem("", 0, newGroup));
+                ShowNewItemButton(newGroup);
 
                 return true;
             }
@@ -140,50 +132,127 @@ namespace HMI_Lab3
         #region AddNewItem
         private void ShowNewItemButtons()
         {
-            for (int i = 1; i < categoryListView.Items.Count; i++)
+            foreach (ListViewGroup group in categoryListView.Groups)
             {
-                if (categoryListView.Items[i - 1].Group != categoryListView.Items[i].Group)
-                {
-                    ShowNewItemButton(i, categoryListView.Items[i - 1].Group);
-                    i++;
-                }
+                ShowNewItemButton(group);
             }
         }
-        private void HideNewItemButtons()
+        private void ShowNewItemButton(ListViewGroup group)
         {
-            var controls = categoryListView.Controls;
-            for (int i = 0; i < controls.Count; i++)
-            {
-                if ((controls[i] is Button) && (controls[i] as Button).Tag.ToString() == "AddNewItem")
-                {
-                    controls[i].Hide();
-                    controls.Remove(controls[i]);
-                    i--;
-                }
-            }
-
-            for (int i = 0; i < categoryListView.Items.Count; i++)
-            {
-                if (string.IsNullOrEmpty(categoryListView.Items[i].Text))
-                {
-                    categoryListView.Items.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
-        private void ShowNewItemButton(int lastItemIndex, ListViewGroup group)
-        {
-            var newPanel = addItemPanel.Clone();
-            categoryListView.Items.Insert(lastItemIndex, new ListViewItem("", group));
-            Point position = categoryListView.Items[lastItemIndex].Position;
+            var newPanel = CreateAddItemPanel(group);
+            ListViewItem listItem = categoryListView.Items.Add(new ListViewItem("", group));
+            Point position = listItem.Position;
+            position.Y -= 2;
             newPanel.Location = position;
+
             categoryListView.Controls.Add(newPanel);
 
             newPanel.Show();
+
+            newItemPanels.Add(newPanel);
         }
-        private void addItemPanel_Click(object sender, EventArgs e)
+        private Panel CreateAddItemPanel(ListViewGroup group)
         {
-            //Add new item
+            Panel addItemPanel = new Panel();
+            addItemPanel.SuspendLayout();
+
+            // 
+            // hintTextBox1
+            // 
+            hintTextBox1 = new HintTextBox();
+
+            hintTextBox1.Cue = "Имя товара";
+            hintTextBox1.Location = new System.Drawing.Point(30, 4);
+            hintTextBox1.Name = "ItemNameTextBox";
+            hintTextBox1.Size = new System.Drawing.Size(313, 20);
+            hintTextBox1.TabIndex = 6;
+            hintTextBox1.KeyDown += AddItemPanel;
+            // 
+            // hintTextBox2
+            // 
+            hintTextBox2 = new HintTextBox();
+
+            hintTextBox2.Cue = "Цена";
+            hintTextBox2.Location = new System.Drawing.Point(350, 4);
+            hintTextBox2.Name = "ItemCostTextBox";
+            hintTextBox2.Size = new System.Drawing.Size(91, 20);
+            hintTextBox2.TabIndex = 6;
+            hintTextBox2.KeyDown += AddItemPanel;
+            // 
+            // pictureBox3
+            // 
+            pictureBox3 = new PictureBox();
+
+            pictureBox3.Image = global::HMI_Lab3.Properties.Resources.plus;
+            pictureBox3.InitialImage = global::HMI_Lab3.Properties.Resources.plus;
+            pictureBox3.Location = new System.Drawing.Point(4, 3);
+            pictureBox3.Name = "PlusItemButton";
+            pictureBox3.Size = new System.Drawing.Size(20, 20);
+            pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            pictureBox3.TabIndex = 6;
+            pictureBox3.TabStop = false;
+            pictureBox3.Click += new EventHandler(AddItemPanel);
+
+            addItemPanel.Controls.Add(hintTextBox1);
+            addItemPanel.Controls.Add(hintTextBox2);
+            addItemPanel.Controls.Add(pictureBox3);
+            addItemPanel.Location = new System.Drawing.Point(12, 378);
+            addItemPanel.Name = "addItemPanel";
+            addItemPanel.Tag = group;
+            addItemPanel.Size = new System.Drawing.Size(776, 24);
+            addItemPanel.TabIndex = 6;
+
+            return addItemPanel;
+        }
+        private void HideNewItemButtons()
+        {
+            newItemPanels.ForEach(x => x.Dispose());
+            newItemPanels = new List<Panel>();
+        }
+
+        private void AddItemPanel(object sender, EventArgs e)
+        {
+            Panel addItemPanel;
+            if (e is KeyEventArgs && (e as KeyEventArgs).KeyCode == Keys.Enter)
+            {
+                addItemPanel = (sender as Control).Parent as Panel;
+            }
+            else if(sender is PictureBox)//Button
+            {
+                addItemPanel = (sender as Control).Parent as Panel;
+            }
+            else
+            {
+                return;
+            }
+
+            if (addItemPanel.Controls[0].Text == "")
+            {
+                MessageBox.Show("Вы ввели пустое значение", "Сообщение", MessageBoxButtons.OK,
+    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+            }
+            else if(addItemPanel.Controls[1].Text == "")
+            {
+                MessageBox.Show("Вы ввели пустое значение", "Сообщение", MessageBoxButtons.OK,
+MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+            }
+            else if(categoryListView.HasItem(addItemPanel.Controls[0].Text, addItemPanel.Tag as ListViewGroup))
+            {
+                MessageBox.Show("Товар с таким именем в текущей категории уже существует", "Сообщение", MessageBoxButtons.OK,
+     MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+            }
+            else
+            {
+                categoryListView.Items.Add(new ListViewItem(addItemPanel.Controls[0].Text, addItemPanel.Tag as ListViewGroup));
+
+                SaveToDataBase();
+                LoadFromDataBase();
+
+                HideNewItemButtons();
+                ShowNewItemButtons();
+
+                SetNewCategoryPanel(true);
+            }
         }
         #endregion
 
@@ -195,7 +264,7 @@ namespace HMI_Lab3
                 editButton.FlatAppearance.CheckedBackColor = Color.CornflowerBlue;
                 editButton.ForeColor = Color.White;
 
-                //ShowNewItemButtons();
+                ShowNewItemButtons();
             }
             else
             {
@@ -203,8 +272,10 @@ namespace HMI_Lab3
                 editButton.FlatAppearance.CheckedBackColor = Color.White;
                 editButton.ForeColor = Color.Black;
 
-                //HideNewItemButtons();
-                categoryListView.Items.RemoveEmpties();
+                HideNewItemButtons();
+
+                SaveToDataBase();
+                LoadFromDataBase();
             }
 
             SetNewCategoryPanel(editButton.Checked);
@@ -235,9 +306,50 @@ namespace HMI_Lab3
 
             isResizing = false;
         }
-        private void CategoryListView_ItemDragDrop(object sender, ListViewItemDragEventArgs e)
+        private void CategoryListView_ItemDragged(object sender, ListViewItemDragEventArgs e)
         {
+            SaveToDataBase();
+            LoadFromDataBase();
+
+            HideNewItemButtons();
+            ShowNewItemButtons();
+
             SetNewCategoryPanel(true);
+
+            categoryListView.Refresh();
+        }
+
+        private void SaveToDataBase()
+        {
+            categoryListView.RemoveEmpty();
+            categories = new List<Category>();
+            List<Item> items = new List<Item>();
+
+            foreach (ListViewGroup group in categoryListView.Groups)
+            {
+                items = new List<Item>();
+                foreach (ListViewItem item in group.Items)
+                {
+                    items.Add(new Item(item.Text, 0));
+                }
+                categories.Add(new Category(group.Header, items));
+            }
+        }
+        private void LoadFromDataBase()
+        {
+            categoryListView.Items.Clear();
+            categoryListView.Groups.Clear();
+
+            foreach (var category in categories)
+            {
+                ListViewGroup group = new ListViewGroup(category.Name);
+                categoryListView.Groups.Add(group);
+
+                foreach (var item in category.Items)
+                {
+                    categoryListView.Items.Add(new ListViewItem(item.Name, item.Cost, group));
+                }
+            }
         }
     }
 }
