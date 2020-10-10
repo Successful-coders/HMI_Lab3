@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace HMI_Lab3
 {
-    public partial class PriceList : Form
+    public partial class PriceList : Form, ISignable
     {
         private bool isResizing = false;
         private List<Category> categories = new List<Category>();
@@ -279,7 +279,7 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
 
             SetNewCategoryPanel(editButton.Checked);
-            categoryListView.AllowItemDrag = editButton.Checked;
+            categoryListView.AllowItemDrag = false;
         }
 
         private void categoryListView_Resize(object sender, EventArgs e)
@@ -350,6 +350,18 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                     categoryListView.Items.Add(new ListViewItem(item.Name, item.Cost, group));
                 }
             }
+        }
+
+        //Signing in
+        private void SignInButton_Click(object sender, EventArgs e)
+        {
+            SignInForm signInForm = new SignInForm(this);
+            signInForm.Show();
+        }
+        public void SignIn(string login, string password)
+        {
+            signInButton.Visible = false;
+            editButton.Visible = true;
         }
     }
 }
