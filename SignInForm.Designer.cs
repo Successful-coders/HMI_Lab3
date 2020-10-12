@@ -134,7 +134,7 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "SignInForm";
-            this.Text = "SignInForm";
+            this.Text = "Вход в режим администратора";
             this.ResumeLayout(false);
             this.PerformLayout();
 
