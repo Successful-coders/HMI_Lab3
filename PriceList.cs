@@ -50,7 +50,7 @@ namespace HMI_Lab3
 
             categoryListView.AllowItemDrag = false;
 
-            LoadFromDataBase();
+            LoadFromDataBase(categories);
 
             categoryListView.Controls.Add(addCategoryPanel);
 
@@ -61,7 +61,6 @@ namespace HMI_Lab3
 
 
         #region AddNewCategory
-
         private void SetNewCategoryPanel(bool isEnable)
         {
             if (isEnable)
@@ -245,8 +244,8 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             {
                 categoryListView.Items.Add(new ListViewItem(addItemPanel.Controls[0].Text, addItemPanel.Tag as ListViewGroup));
 
-                SaveToDataBase();
-                LoadFromDataBase();
+                categories = SaveToDataBase();
+                LoadFromDataBase(categories);
 
                 HideNewItemButtons();
                 ShowNewItemButtons();
@@ -274,14 +273,13 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
                 HideNewItemButtons();
 
-                SaveToDataBase();
-                LoadFromDataBase();
+                categories = SaveToDataBase();
+                LoadFromDataBase(categories);
             }
 
             SetNewCategoryPanel(editButton.Checked);
             categoryListView.AllowItemDrag = false;
         }
-
         private void categoryListView_Resize(object sender, EventArgs e)
         {
             if (!isResizing)
@@ -308,8 +306,8 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
         }
         private void CategoryListView_ItemDragged(object sender, ListViewItemDragEventArgs e)
         {
-            SaveToDataBase();
-            LoadFromDataBase();
+            categories = SaveToDataBase();
+            LoadFromDataBase(categories);
 
             HideNewItemButtons();
             ShowNewItemButtons();
@@ -319,10 +317,10 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             categoryListView.Refresh();
         }
 
-        private void SaveToDataBase()
+        private List<Category> SaveToDataBase()
         {
             categoryListView.RemoveEmpty();
-            categories = new List<Category>();
+            List<Category> categories = new List<Category>();
             List<Item> items = new List<Item>();
 
             foreach (ListViewGroup group in categoryListView.Groups)
@@ -334,8 +332,10 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 }
                 categories.Add(new Category(group.Header, items));
             }
+
+            return categories;
         }
-        private void LoadFromDataBase()
+        private void LoadFromDataBase(List<Category> categories)
         {
             categoryListView.Items.Clear();
             categoryListView.Groups.Clear();
@@ -352,7 +352,7 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
         }
 
-        //Signing in
+        #region SigningIn
         private void SignInButton_Click(object sender, EventArgs e)
         {
             SignInForm signInForm = new SignInForm(this);
@@ -363,5 +363,31 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             signInButton.Visible = false;
             editButton.Visible = true;
         }
+        #endregion
+
+        #region Search
+        private void Search()
+        {
+            categoryListView.Items.Clear();
+
+            List<Category> filteredCategories = new List<Category>();
+            foreach (var category in this.categories)
+            {
+                List<Item> items = category.Items.Where(i => string.IsNullOrEmpty(searchBox.Text) || i.Name.StartsWith(searchBox.Text)).ToList();
+
+                filteredCategories.Add(new Category(category.Name, items));
+            }
+
+            LoadFromDataBase(filteredCategories);
+        }
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            Search();
+        }
+        private void searchBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            Search();
+        }
+        #endregion
     }
 }

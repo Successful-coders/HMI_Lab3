@@ -56,6 +56,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ISignable.cs" />
+    <Compile Include="ListViewGroupExt.cs" />
     <Compile Include="ListViewItemCollectionExt.cs" />
     <Compile Include="PriceList.cs">
       <SubType>Form</SubType>
@@ -112,6 +113,7 @@
     <Content Include="Resources\plus.png" />
     <Content Include="Resources\plus16.png" />
     <Content Include="Resources\plusWhite.png" />
+    <None Include="Resources\search.png" />
     <Content Include="Resources\signIn.png" />
     <None Include="Resources\editPressed.png" />
   </ItemGroup>
