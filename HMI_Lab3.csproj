@@ -56,7 +56,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ISignable.cs" />
-    <Compile Include="ListViewGroupExt.cs" />
     <Compile Include="ListViewItemCollectionExt.cs" />
     <Compile Include="PriceList.cs">
       <SubType>Form</SubType>

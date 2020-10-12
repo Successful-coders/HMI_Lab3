@@ -278,7 +278,7 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
 
             SetNewCategoryPanel(editButton.Checked);
-            categoryListView.AllowItemDrag = false;
+            categoryListView.AllowItemDrag = editButton.Checked;
         }
         private void categoryListView_Resize(object sender, EventArgs e)
         {
