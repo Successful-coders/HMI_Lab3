@@ -72,6 +72,7 @@
             // 
             this.loginTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginTextBox.Location = new System.Drawing.Point(128, 60);
+            this.loginTextBox.MaxLength = 25;
             this.loginTextBox.Name = "loginTextBox";
             this.loginTextBox.Size = new System.Drawing.Size(197, 23);
             this.loginTextBox.TabIndex = 1;
@@ -80,6 +81,7 @@
             // 
             this.passwordTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordTextBox.Location = new System.Drawing.Point(128, 106);
+            this.passwordTextBox.MaxLength = 25;
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '*';
             this.passwordTextBox.Size = new System.Drawing.Size(197, 23);

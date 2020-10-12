@@ -142,6 +142,7 @@ namespace HMI_Lab3
             hintTextBox1.Size = new System.Drawing.Size(438, 20);
             hintTextBox1.TabIndex = 5;
             hintTextBox1.KeyDown += AddItemPanel;
+            hintTextBox1.MaxLength = 25;
             // 
             // hintTextBox2
             // 
@@ -153,6 +154,8 @@ namespace HMI_Lab3
             hintTextBox2.Size = new System.Drawing.Size(189, 20);
             hintTextBox2.TabIndex = 5;
             hintTextBox2.KeyDown += AddItemPanel;
+            hintTextBox2.MaxLength = 8;
+
             // 
             // hintTextBox3
             // 
@@ -164,6 +167,7 @@ namespace HMI_Lab3
             hintTextBox3.Size = new System.Drawing.Size(91, 20);
             hintTextBox3.TabIndex = 5;
             hintTextBox3.KeyDown += AddItemPanel;
+            hintTextBox3.MaxLength = 8;
             // 
             // pictureBox3
             // 
