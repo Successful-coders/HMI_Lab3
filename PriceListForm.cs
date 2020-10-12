@@ -153,6 +153,7 @@ namespace HMI_Lab3
             hintTextBox2.Name = "hintTextBox2";
             hintTextBox2.Size = new System.Drawing.Size(189, 20);
             hintTextBox2.TabIndex = 5;
+            hintTextBox2.KeyPress += CheckNumberEnter;
             hintTextBox2.KeyDown += AddItemPanel;
             hintTextBox2.MaxLength = 8;
 
@@ -199,6 +200,18 @@ namespace HMI_Lab3
         {
             newItemPanels.ForEach(x => x.Dispose());
             newItemPanels = new List<Panel>();
+        }
+        private void CheckNumberEnter(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            if ((e.KeyChar == '.') && ((sender as TextBox).Text.IndexOf('.') > -1))
+            {
+                e.Handled = true;
+            }
         }
 
         private void AddItemPanel(object sender, EventArgs e)
