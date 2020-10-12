@@ -12,7 +12,6 @@ namespace HMI_Lab3
 {
     public partial class PriceListForm : Form, ISignable
     {
-        private bool isResizing = false;
         private List<Category> categories = new List<Category>();
         private List<Panel> newItemPanels = new List<Panel>();
 
@@ -25,31 +24,12 @@ namespace HMI_Lab3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            categories.Add(new Category("Чистка зубов", new List<Item>()
-            {
-                new Item("Регулярная чиста", 30),
-                new Item("Глубокая чистка", 50),
-                new Item("Лазерная чиста", 180),
-                new Item("Полная чистка", 280),
-            }));
-            categories.Add(new Category("Зубные протезы", new List<Item>()
-            {
-                new Item("Акриловые", 1230),
-                new Item("Фарфоровые", 1350),
-            }));
-            categories.Add(new Category("Коронка", new List<Item>()
-            {
-                new Item("Металлическая", 230),
-                new Item("Фарфоровая", 350),
-                new Item("Золотая", 350),
-            }));
+            InitStartItems();
+
+            InitListView(categories);
 
             categoryListView.AllowItemDrag = false;
-
-            LoadFromDataBase(categories);
-
             categoryListView.Controls.Add(addCategoryPanel);
-
             categoryListView.ItemDragged += CategoryListView_ItemDragged;
 
             categoryListView_Resize(categoryListView, e);
@@ -135,7 +115,7 @@ namespace HMI_Lab3
         private void ShowNewItemButton(ListViewGroup group)
         {
             var newPanel = CreateAddItemPanel(group);
-            ListViewItem listItem = categoryListView.Items.Add(new ListViewItem("", group));
+            ListViewItem listItem = categoryListView.Items.Add(new ListViewItem(new string[] { "", "", "" }, group));
             Point position = listItem.Position;
             position.Y -= 2;
             newPanel.Location = position;
@@ -158,9 +138,9 @@ namespace HMI_Lab3
 
             hintTextBox1.Cue = "Имя товара";
             hintTextBox1.Location = new System.Drawing.Point(30, 4);
-            hintTextBox1.Name = "ItemNameTextBox";
-            hintTextBox1.Size = new System.Drawing.Size(313, 20);
-            hintTextBox1.TabIndex = 6;
+            hintTextBox1.Name = "hintTextBox1";
+            hintTextBox1.Size = new System.Drawing.Size(438, 20);
+            hintTextBox1.TabIndex = 5;
             hintTextBox1.KeyDown += AddItemPanel;
             // 
             // hintTextBox2
@@ -168,11 +148,22 @@ namespace HMI_Lab3
             hintTextBox2 = new HintTextBox();
 
             hintTextBox2.Cue = "Цена";
-            hintTextBox2.Location = new System.Drawing.Point(350, 4);
-            hintTextBox2.Name = "ItemCostTextBox";
-            hintTextBox2.Size = new System.Drawing.Size(91, 20);
-            hintTextBox2.TabIndex = 6;
+            hintTextBox2.Location = new System.Drawing.Point(481, 4);
+            hintTextBox2.Name = "hintTextBox2";
+            hintTextBox2.Size = new System.Drawing.Size(189, 20);
+            hintTextBox2.TabIndex = 5;
             hintTextBox2.KeyDown += AddItemPanel;
+            // 
+            // hintTextBox3
+            // 
+            hintTextBox3 = new HintTextBox();
+
+            hintTextBox3.Cue = "Ед. изм.";
+            hintTextBox3.Location = new System.Drawing.Point(682, 4);
+            hintTextBox3.Name = "hintTextBox3";
+            hintTextBox3.Size = new System.Drawing.Size(91, 20);
+            hintTextBox3.TabIndex = 5;
+            hintTextBox3.KeyDown += AddItemPanel;
             // 
             // pictureBox3
             // 
@@ -190,6 +181,7 @@ namespace HMI_Lab3
 
             addItemPanel.Controls.Add(hintTextBox1);
             addItemPanel.Controls.Add(hintTextBox2);
+            addItemPanel.Controls.Add(hintTextBox3);
             addItemPanel.Controls.Add(pictureBox3);
             addItemPanel.Location = new System.Drawing.Point(12, 378);
             addItemPanel.Name = "addItemPanel";
@@ -238,10 +230,11 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             }
             else
             {
-                categoryListView.Items.Add(new ListViewItem(addItemPanel.Controls[0].Text, addItemPanel.Tag as ListViewGroup));
+                categoryListView.Items.Add(new ListViewItem(new string[] { addItemPanel.Controls[0].Text, addItemPanel.Controls[1].Text , addItemPanel.Controls[2].Text },
+                    addItemPanel.Tag as ListViewGroup));
 
-                categories = SaveToDataBase();
-                LoadFromDataBase(categories);
+                categories = GetFromListView();
+                InitListView(categories);
 
                 HideNewItemButtons();
                 ShowNewItemButtons();
@@ -251,6 +244,7 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
         }
         #endregion
 
+        #region FormEvents
         private void editButton_CheckedChanged(object sender, EventArgs e)
         {
             if (editButton.Checked)
@@ -270,8 +264,8 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
                 HideNewItemButtons();
 
-                categories = SaveToDataBase();
-                LoadFromDataBase(categories);
+                categories = GetFromListView();
+                InitListView(categories);
             }
 
             SetNewCategoryPanel(editButton.Checked);
@@ -282,32 +276,14 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
         }
         private void categoryListView_Resize(object sender, EventArgs e)
         {
-            if (!isResizing)
-            {
-                isResizing = true;
-
-                ListView listView = sender as ListView;
-                if (listView != null)
-                {
-                    float totalColumnWidth = 0;
-
-                    for (int i = 0; i < listView.Columns.Count; i++)
-                        totalColumnWidth += Convert.ToInt32(listView.Columns[i].Tag);
-
-                    for (int i = 0; i < listView.Columns.Count; i++)
-                    {
-                        float colPercentage = (Convert.ToInt32(listView.Columns[i].Tag) / totalColumnWidth);
-                        listView.Columns[i].Width = (int)(colPercentage * listView.ClientRectangle.Width);
-                    }
-                }
-            }
-
-            isResizing = false;
+            categoryListView.Columns[0].Width = 490;
+            categoryListView.Columns[1].Width = 200;
+            categoryListView.Columns[2].Width = 100;
         }
         private void CategoryListView_ItemDragged(object sender, ListViewItemDragEventArgs e)
         {
-            categories = SaveToDataBase();
-            LoadFromDataBase(categories);
+            categories = GetFromListView();
+            InitListView(categories);
 
             HideNewItemButtons();
             ShowNewItemButtons();
@@ -316,26 +292,27 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
             categoryListView.Refresh();
         }
+        #endregion
 
-        private List<Category> SaveToDataBase()
+        #region DataBaseWork
+        private List<Category> GetFromListView()
         {
             categoryListView.RemoveEmpty();
             List<Category> categories = new List<Category>();
-            List<Item> items = new List<Item>();
 
             foreach (ListViewGroup group in categoryListView.Groups)
             {
-                items = new List<Item>();
+                List<Item> items = new List<Item>();
                 foreach (ListViewItem item in group.Items)
                 {
-                    items.Add(new Item(item.Text, 0));
+                    items.Add(new Item(item.SubItems[0].Text, int.Parse(item.SubItems[1].Text), item.SubItems[2].Text));
                 }
                 categories.Add(new Category(group.Header, items));
             }
 
             return categories;
         }
-        private void LoadFromDataBase(List<Category> categories)
+        private void InitListView(List<Category> categories)
         {
             categoryListView.Items.Clear();
             categoryListView.Groups.Clear();
@@ -347,10 +324,32 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
                 foreach (var item in category.Items)
                 {
-                    categoryListView.Items.Add(new ListViewItem(item.Name, item.Cost, group));
+                    categoryListView.Items.Add(new ListViewItem(new string[] { item.Name, item.Cost.ToString(), item.Unit }, group));
                 }
             }
         }
+        private void InitStartItems()
+        {
+            categories.Add(new Category("Чистка зубов", new List<Item>()
+            {
+                new Item("Регулярная чиста", 30),
+                new Item("Глубокая чистка", 50),
+                new Item("Лазерная чиста", 180),
+                new Item("Полная чистка", 280),
+            }));
+            categories.Add(new Category("Зубные протезы", new List<Item>()
+            {
+                new Item("Акриловые", 1230),
+                new Item("Фарфоровые", 1350),
+            }));
+            categories.Add(new Category("Коронка", new List<Item>()
+            {
+                new Item("Металлическая", 230),
+                new Item("Фарфоровая", 350),
+                new Item("Золотая", 350),
+            }));
+        }
+        #endregion
 
         #region SigningIn
         private void SignInButton_Click(object sender, EventArgs e)
@@ -379,14 +378,14 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 filteredCategories.Add(new Category(category.Name, items));
             }
 
-            LoadFromDataBase(filteredCategories);
+            InitListView(filteredCategories);
         }
         private void ClearSearch()
         {
             searchBox.Text = "";
             categoryListView.Items.Clear();
 
-            LoadFromDataBase(categories);
+            InitListView(categories);
         }
         private void searchButton_Click(object sender, EventArgs e)
         {

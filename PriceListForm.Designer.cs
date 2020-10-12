@@ -38,9 +38,13 @@ namespace HMI_Lab3
             this.AddIcon = new System.Windows.Forms.ImageList(this.components);
             this.RemoveIcon = new System.Windows.Forms.ImageList(this.components);
             this.addCategoryPanel = new System.Windows.Forms.Panel();
+            this.categoryNameTextBox = new HMI_Lab3.HintTextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.AddButton = new System.Windows.Forms.PictureBox();
             this.addItemPanel = new System.Windows.Forms.Panel();
+            this.hintTextBox3 = new HMI_Lab3.HintTextBox();
+            this.hintTextBox1 = new HMI_Lab3.HintTextBox();
+            this.hintTextBox2 = new HMI_Lab3.HintTextBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.SignInIcon = new System.Windows.Forms.ImageList(this.components);
             this.signInButton = new System.Windows.Forms.PictureBox();
@@ -48,12 +52,10 @@ namespace HMI_Lab3
             this.searchButton = new System.Windows.Forms.PictureBox();
             this.signInLabel = new System.Windows.Forms.Label();
             this.searchBox = new HMI_Lab3.HintTextBox();
-            this.hintTextBox1 = new HMI_Lab3.HintTextBox();
-            this.hintTextBox2 = new HMI_Lab3.HintTextBox();
-            this.categoryNameTextBox = new HMI_Lab3.HintTextBox();
             this.categoryListView = new HMI_Lab3.DragListView();
-            this.Description = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ItemName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Cost = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Unit = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.addCategoryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AddButton)).BeginInit();
@@ -93,6 +95,15 @@ namespace HMI_Lab3
             this.addCategoryPanel.TabIndex = 3;
             this.addCategoryPanel.Visible = false;
             // 
+            // categoryNameTextBox
+            // 
+            this.categoryNameTextBox.Cue = "Имя категории";
+            this.categoryNameTextBox.Location = new System.Drawing.Point(30, 2);
+            this.categoryNameTextBox.Name = "categoryNameTextBox";
+            this.categoryNameTextBox.Size = new System.Drawing.Size(313, 20);
+            this.categoryNameTextBox.TabIndex = 5;
+            this.categoryNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.categoryNameTextBox_KeyDown);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.HotTrack;
@@ -116,6 +127,7 @@ namespace HMI_Lab3
             // 
             // addItemPanel
             // 
+            this.addItemPanel.Controls.Add(this.hintTextBox3);
             this.addItemPanel.Controls.Add(this.hintTextBox1);
             this.addItemPanel.Controls.Add(this.hintTextBox2);
             this.addItemPanel.Controls.Add(this.pictureBox3);
@@ -124,6 +136,31 @@ namespace HMI_Lab3
             this.addItemPanel.Size = new System.Drawing.Size(776, 27);
             this.addItemPanel.TabIndex = 5;
             this.addItemPanel.Visible = false;
+            // 
+            // hintTextBox1
+            // 
+            this.hintTextBox1.Cue = "Имя товара";
+            this.hintTextBox1.Location = new System.Drawing.Point(30, 4);
+            this.hintTextBox1.Name = "hintTextBox1";
+            this.hintTextBox1.Size = new System.Drawing.Size(438, 20);
+            this.hintTextBox1.TabIndex = 5;
+            this.hintTextBox1.Visible = false;
+            // 
+            // hintTextBox2
+            // 
+            this.hintTextBox2.Cue = "Цена";
+            this.hintTextBox2.Location = new System.Drawing.Point(481, 4);
+            this.hintTextBox2.Name = "hintTextBox2";
+            this.hintTextBox2.Size = new System.Drawing.Size(189, 20);
+            this.hintTextBox2.TabIndex = 5;
+            // 
+            // hintTextBox3
+            // 
+            this.hintTextBox3.Cue = "Ед. изм.";
+            this.hintTextBox3.Location = new System.Drawing.Point(682, 4);
+            this.hintTextBox3.Name = "hintTextBox3";
+            this.hintTextBox3.Size = new System.Drawing.Size(91, 20);
+            this.hintTextBox3.TabIndex = 5;
             // 
             // pictureBox3
             // 
@@ -205,38 +242,13 @@ namespace HMI_Lab3
             this.searchBox.TabIndex = 9;
             this.searchBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.searchBox_KeyUp);
             // 
-            // hintTextBox1
-            // 
-            this.hintTextBox1.Cue = "Имя товара";
-            this.hintTextBox1.Location = new System.Drawing.Point(30, 4);
-            this.hintTextBox1.Name = "hintTextBox1";
-            this.hintTextBox1.Size = new System.Drawing.Size(313, 20);
-            this.hintTextBox1.TabIndex = 6;
-            this.hintTextBox1.Visible = false;
-            // 
-            // hintTextBox2
-            // 
-            this.hintTextBox2.Cue = "Цена";
-            this.hintTextBox2.Location = new System.Drawing.Point(350, 4);
-            this.hintTextBox2.Name = "hintTextBox2";
-            this.hintTextBox2.Size = new System.Drawing.Size(91, 20);
-            this.hintTextBox2.TabIndex = 5;
-            // 
-            // categoryNameTextBox
-            // 
-            this.categoryNameTextBox.Cue = "Имя категории";
-            this.categoryNameTextBox.Location = new System.Drawing.Point(30, 2);
-            this.categoryNameTextBox.Name = "categoryNameTextBox";
-            this.categoryNameTextBox.Size = new System.Drawing.Size(313, 20);
-            this.categoryNameTextBox.TabIndex = 5;
-            this.categoryNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.categoryNameTextBox_KeyDown);
-            // 
             // categoryListView
             // 
             this.categoryListView.AllowDrop = true;
             this.categoryListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Description,
-            this.Cost});
+            this.ItemName,
+            this.Cost,
+            this.Unit});
             this.categoryListView.HideSelection = false;
             this.categoryListView.InsertionLineColor = System.Drawing.Color.Black;
             this.categoryListView.Location = new System.Drawing.Point(0, 63);
@@ -248,18 +260,25 @@ namespace HMI_Lab3
             this.categoryListView.View = System.Windows.Forms.View.Details;
             this.categoryListView.Resize += new System.EventHandler(this.categoryListView_Resize);
             // 
-            // Description
+            // ItemName
             // 
-            this.Description.Tag = "1";
-            this.Description.Text = "Имя";
-            this.Description.Width = 220;
+            this.ItemName.Tag = "1";
+            this.ItemName.Text = "Имя";
+            this.ItemName.Width = 490;
             // 
             // Cost
             // 
             this.Cost.Tag = "2";
-            this.Cost.Text = "Цена";
-            this.Cost.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.Cost.Width = 573;
+            this.Cost.Text = "Цена, $";
+            this.Cost.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Cost.Width = 200;
+            // 
+            // Unit
+            // 
+            this.Unit.Tag = "3";
+            this.Unit.Text = "Ед. изм.";
+            this.Unit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.Unit.Width = 100;
             // 
             // PriceListForm
             // 
@@ -295,7 +314,7 @@ namespace HMI_Lab3
         #endregion
 
         private DragListView categoryListView;
-        private System.Windows.Forms.ColumnHeader Description;
+        private System.Windows.Forms.ColumnHeader ItemName;
         private System.Windows.Forms.ColumnHeader Cost;
         private CheckBox editButton;
         private ImageList editButtonImages;
@@ -314,6 +333,8 @@ namespace HMI_Lab3
         private PictureBox searchButton;
         private HintTextBox searchBox;
         private Label signInLabel;
+        private ColumnHeader Unit;
+        private HintTextBox hintTextBox3;
     }
 }
 

@@ -13,7 +13,7 @@ namespace HMI_Lab3
         private string unit;
 
 
-        public Item(string name, int cost, string unit = "$")
+        public Item(string name, int cost, string unit = "шт.")
         {
             this.name = name;
             this.cost = cost;
