@@ -56,6 +56,7 @@ namespace HMI_Lab3
             this.ItemName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Cost = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Unit = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.noSearchResultLabel = new System.Windows.Forms.Label();
             this.addCategoryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AddButton)).BeginInit();
@@ -137,6 +138,14 @@ namespace HMI_Lab3
             this.addItemPanel.TabIndex = 5;
             this.addItemPanel.Visible = false;
             // 
+            // hintTextBox3
+            // 
+            this.hintTextBox3.Cue = "Ед. изм.";
+            this.hintTextBox3.Location = new System.Drawing.Point(682, 4);
+            this.hintTextBox3.Name = "hintTextBox3";
+            this.hintTextBox3.Size = new System.Drawing.Size(91, 20);
+            this.hintTextBox3.TabIndex = 5;
+            // 
             // hintTextBox1
             // 
             this.hintTextBox1.Cue = "Имя товара";
@@ -153,14 +162,6 @@ namespace HMI_Lab3
             this.hintTextBox2.Name = "hintTextBox2";
             this.hintTextBox2.Size = new System.Drawing.Size(189, 20);
             this.hintTextBox2.TabIndex = 5;
-            // 
-            // hintTextBox3
-            // 
-            this.hintTextBox3.Cue = "Ед. изм.";
-            this.hintTextBox3.Location = new System.Drawing.Point(682, 4);
-            this.hintTextBox3.Name = "hintTextBox3";
-            this.hintTextBox3.Size = new System.Drawing.Size(91, 20);
-            this.hintTextBox3.TabIndex = 5;
             // 
             // pictureBox3
             // 
@@ -280,12 +281,23 @@ namespace HMI_Lab3
             this.Unit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.Unit.Width = 100;
             // 
+            // noSearchResultLabel
+            // 
+            this.noSearchResultLabel.Location = new System.Drawing.Point(12, 95);
+            this.noSearchResultLabel.Name = "noSearchResultLabel";
+            this.noSearchResultLabel.Size = new System.Drawing.Size(776, 23);
+            this.noSearchResultLabel.TabIndex = 11;
+            this.noSearchResultLabel.Text = "По вашему запросу ничего не найдено...";
+            this.noSearchResultLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.noSearchResultLabel.Visible = false;
+            // 
             // PriceListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 784);
+            this.Controls.Add(this.noSearchResultLabel);
             this.Controls.Add(this.signInLabel);
             this.Controls.Add(this.searchBox);
             this.Controls.Add(this.searchButton);
@@ -335,6 +347,7 @@ namespace HMI_Lab3
         private Label signInLabel;
         private ColumnHeader Unit;
         private HintTextBox hintTextBox3;
+        private Label noSearchResultLabel;
     }
 }
 

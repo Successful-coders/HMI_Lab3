@@ -253,6 +253,8 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 editButton.FlatAppearance.CheckedBackColor = Color.CornflowerBlue;
                 editButton.ForeColor = Color.White;
 
+                noSearchResultLabel.Visible = false;
+
                 ClearSearch();
                 ShowNewItemButtons();
             }
@@ -369,6 +371,7 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
         private void Search()
         {
             categoryListView.Items.Clear();
+            int itemsCount = 0;
 
             List<Category> filteredCategories = new List<Category>();
             foreach (var category in categories)
@@ -376,7 +379,10 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 List<Item> items = category.Items.Where(i => string.IsNullOrEmpty(searchBox.Text.ToLower()) || i.Name.ToLower().StartsWith(searchBox.Text.ToLower())).ToList();
 
                 filteredCategories.Add(new Category(category.Name, items));
+                itemsCount += items.Count;
             }
+
+            noSearchResultLabel.Visible = itemsCount <= 0;
 
             InitListView(filteredCategories);
         }
