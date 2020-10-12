@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace HMI_Lab3
 {
-    partial class PriceList
+    partial class PriceListForm
     {
         /// <summary>
         /// Required designer variable.
@@ -33,26 +33,27 @@ namespace HMI_Lab3
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PriceList));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PriceListForm));
             this.editButtonImages = new System.Windows.Forms.ImageList(this.components);
             this.AddIcon = new System.Windows.Forms.ImageList(this.components);
             this.RemoveIcon = new System.Windows.Forms.ImageList(this.components);
             this.addCategoryPanel = new System.Windows.Forms.Panel();
-            this.categoryNameTextBox = new HMI_Lab3.HintTextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.AddButton = new System.Windows.Forms.PictureBox();
             this.addItemPanel = new System.Windows.Forms.Panel();
-            this.hintTextBox1 = new HMI_Lab3.HintTextBox();
-            this.hintTextBox2 = new HMI_Lab3.HintTextBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.SignInIcon = new System.Windows.Forms.ImageList(this.components);
             this.signInButton = new System.Windows.Forms.PictureBox();
             this.editButton = new System.Windows.Forms.CheckBox();
             this.searchButton = new System.Windows.Forms.PictureBox();
+            this.signInLabel = new System.Windows.Forms.Label();
+            this.searchBox = new HMI_Lab3.HintTextBox();
+            this.hintTextBox1 = new HMI_Lab3.HintTextBox();
+            this.hintTextBox2 = new HMI_Lab3.HintTextBox();
+            this.categoryNameTextBox = new HMI_Lab3.HintTextBox();
             this.categoryListView = new HMI_Lab3.DragListView();
             this.Description = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Cost = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.searchBox = new HMI_Lab3.HintTextBox();
             this.addCategoryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AddButton)).BeginInit();
@@ -92,15 +93,6 @@ namespace HMI_Lab3
             this.addCategoryPanel.TabIndex = 3;
             this.addCategoryPanel.Visible = false;
             // 
-            // categoryNameTextBox
-            // 
-            this.categoryNameTextBox.Cue = "Имя категории";
-            this.categoryNameTextBox.Location = new System.Drawing.Point(30, 2);
-            this.categoryNameTextBox.Name = "categoryNameTextBox";
-            this.categoryNameTextBox.Size = new System.Drawing.Size(313, 20);
-            this.categoryNameTextBox.TabIndex = 5;
-            this.categoryNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.categoryNameTextBox_KeyDown);
-            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.SystemColors.HotTrack;
@@ -132,23 +124,6 @@ namespace HMI_Lab3
             this.addItemPanel.Size = new System.Drawing.Size(776, 27);
             this.addItemPanel.TabIndex = 5;
             this.addItemPanel.Visible = false;
-            // 
-            // hintTextBox1
-            // 
-            this.hintTextBox1.Cue = "Имя товара";
-            this.hintTextBox1.Location = new System.Drawing.Point(30, 4);
-            this.hintTextBox1.Name = "hintTextBox1";
-            this.hintTextBox1.Size = new System.Drawing.Size(313, 20);
-            this.hintTextBox1.TabIndex = 6;
-            this.hintTextBox1.Visible = false;
-            // 
-            // hintTextBox2
-            // 
-            this.hintTextBox2.Cue = "Цена";
-            this.hintTextBox2.Location = new System.Drawing.Point(350, 4);
-            this.hintTextBox2.Name = "hintTextBox2";
-            this.hintTextBox2.Size = new System.Drawing.Size(91, 20);
-            this.hintTextBox2.TabIndex = 5;
             // 
             // pictureBox3
             // 
@@ -189,9 +164,9 @@ namespace HMI_Lab3
             this.editButton.ImageList = this.editButtonImages;
             this.editButton.Location = new System.Drawing.Point(12, 12);
             this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(60, 40);
+            this.editButton.Size = new System.Drawing.Size(131, 40);
             this.editButton.TabIndex = 1;
-            this.editButton.Text = "Edit";
+            this.editButton.Text = "Редактировать";
             this.editButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.editButton.UseVisualStyleBackColor = false;
             this.editButton.Visible = false;
@@ -208,6 +183,53 @@ namespace HMI_Lab3
             this.searchButton.TabIndex = 8;
             this.searchButton.TabStop = false;
             this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
+            // 
+            // signInLabel
+            // 
+            this.signInLabel.AutoSize = true;
+            this.signInLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.signInLabel.Location = new System.Drawing.Point(691, 24);
+            this.signInLabel.Name = "signInLabel";
+            this.signInLabel.Size = new System.Drawing.Size(48, 17);
+            this.signInLabel.TabIndex = 10;
+            this.signInLabel.Text = "Войти";
+            this.signInLabel.Click += new System.EventHandler(this.SignInButton_Click);
+            // 
+            // searchBox
+            // 
+            this.searchBox.Cue = "Поиск...";
+            this.searchBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.searchBox.Location = new System.Drawing.Point(267, 29);
+            this.searchBox.Name = "searchBox";
+            this.searchBox.Size = new System.Drawing.Size(186, 23);
+            this.searchBox.TabIndex = 9;
+            this.searchBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.searchBox_KeyUp);
+            // 
+            // hintTextBox1
+            // 
+            this.hintTextBox1.Cue = "Имя товара";
+            this.hintTextBox1.Location = new System.Drawing.Point(30, 4);
+            this.hintTextBox1.Name = "hintTextBox1";
+            this.hintTextBox1.Size = new System.Drawing.Size(313, 20);
+            this.hintTextBox1.TabIndex = 6;
+            this.hintTextBox1.Visible = false;
+            // 
+            // hintTextBox2
+            // 
+            this.hintTextBox2.Cue = "Цена";
+            this.hintTextBox2.Location = new System.Drawing.Point(350, 4);
+            this.hintTextBox2.Name = "hintTextBox2";
+            this.hintTextBox2.Size = new System.Drawing.Size(91, 20);
+            this.hintTextBox2.TabIndex = 5;
+            // 
+            // categoryNameTextBox
+            // 
+            this.categoryNameTextBox.Cue = "Имя категории";
+            this.categoryNameTextBox.Location = new System.Drawing.Point(30, 2);
+            this.categoryNameTextBox.Name = "categoryNameTextBox";
+            this.categoryNameTextBox.Size = new System.Drawing.Size(313, 20);
+            this.categoryNameTextBox.TabIndex = 5;
+            this.categoryNameTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.categoryNameTextBox_KeyDown);
             // 
             // categoryListView
             // 
@@ -239,22 +261,13 @@ namespace HMI_Lab3
             this.Cost.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.Cost.Width = 573;
             // 
-            // searchBox
-            // 
-            this.searchBox.Cue = "Поиск...";
-            this.searchBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.searchBox.Location = new System.Drawing.Point(267, 29);
-            this.searchBox.Name = "searchBox";
-            this.searchBox.Size = new System.Drawing.Size(186, 23);
-            this.searchBox.TabIndex = 9;
-            this.searchBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.searchBox_KeyUp);
-            // 
-            // PriceList
+            // PriceListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 784);
+            this.Controls.Add(this.signInLabel);
             this.Controls.Add(this.searchBox);
             this.Controls.Add(this.searchButton);
             this.Controls.Add(this.signInButton);
@@ -262,8 +275,8 @@ namespace HMI_Lab3
             this.Controls.Add(this.addCategoryPanel);
             this.Controls.Add(this.editButton);
             this.Controls.Add(this.categoryListView);
-            this.Name = "PriceList";
-            this.Text = "Dentistry";
+            this.Name = "PriceListForm";
+            this.Text = "Прайс лист стоматологической клиники";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.addCategoryPanel.ResumeLayout(false);
             this.addCategoryPanel.PerformLayout();
@@ -300,6 +313,7 @@ namespace HMI_Lab3
         private PictureBox signInButton;
         private PictureBox searchButton;
         private HintTextBox searchBox;
+        private Label signInLabel;
     }
 }
 

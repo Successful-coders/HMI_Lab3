@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace HMI_Lab3
 {
-    public partial class PriceList : Form, ISignable
+    public partial class PriceListForm : Form, ISignable
     {
         private bool isResizing = false;
         private List<Category> categories = new List<Category>();
         private List<Panel> newItemPanels = new List<Panel>();
 
 
-        public PriceList()
+        public PriceListForm()
         {
             FormBorderStyle = FormBorderStyle.FixedSingle;
             InitializeComponent();
@@ -25,27 +25,23 @@ namespace HMI_Lab3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            categories.Add(new Category("Cleaning", new List<Item>()
+            categories.Add(new Category("Чистка зубов", new List<Item>()
             {
-                new Item("Regular cleaning", 30),
-                new Item("Deep cleaning", 50),
-                new Item("Laser cleaning", 180),
-                new Item("Rich cleaning", 280),
+                new Item("Регулярная чиста", 30),
+                new Item("Глубокая чистка", 50),
+                new Item("Лазерная чиста", 180),
+                new Item("Полная чистка", 280),
             }));
-            categories.Add(new Category("Dentures", new List<Item>()
+            categories.Add(new Category("Зубные протезы", new List<Item>()
             {
-                new Item("Denture acrylic", 230),
-                new Item("Denture Parcelain teeth", 350),
+                new Item("Акриловые", 1230),
+                new Item("Фарфоровые", 1350),
             }));
-            categories.Add(new Category("Dentures 1", new List<Item>()
+            categories.Add(new Category("Коронка", new List<Item>()
             {
-                new Item("Denture acrylic", 230),
-                new Item("Denture Parcelain teeth", 350),
-            }));
-            categories.Add(new Category("Dentures 2", new List<Item>()
-            {
-                new Item("Denture acrylic", 230),
-                new Item("Denture Parcelain teeth", 350),
+                new Item("Металлическая", 230),
+                new Item("Фарфоровая", 350),
+                new Item("Золотая", 350),
             }));
 
             categoryListView.AllowItemDrag = false;
@@ -263,6 +259,7 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 editButton.FlatAppearance.CheckedBackColor = Color.CornflowerBlue;
                 editButton.ForeColor = Color.White;
 
+                ClearSearch();
                 ShowNewItemButtons();
             }
             else
@@ -279,6 +276,9 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
             SetNewCategoryPanel(editButton.Checked);
             categoryListView.AllowItemDrag = editButton.Checked;
+
+            searchBox.Enabled = !editButton.Checked;
+            searchButton.Enabled = !editButton.Checked;
         }
         private void categoryListView_Resize(object sender, EventArgs e)
         {
@@ -361,6 +361,7 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
         public void SignIn(string login, string password)
         {
             signInButton.Visible = false;
+            signInLabel.Visible = false;
             editButton.Visible = true;
         }
         #endregion
@@ -371,14 +372,21 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             categoryListView.Items.Clear();
 
             List<Category> filteredCategories = new List<Category>();
-            foreach (var category in this.categories)
+            foreach (var category in categories)
             {
-                List<Item> items = category.Items.Where(i => string.IsNullOrEmpty(searchBox.Text) || i.Name.StartsWith(searchBox.Text)).ToList();
+                List<Item> items = category.Items.Where(i => string.IsNullOrEmpty(searchBox.Text.ToLower()) || i.Name.ToLower().StartsWith(searchBox.Text.ToLower())).ToList();
 
                 filteredCategories.Add(new Category(category.Name, items));
             }
 
             LoadFromDataBase(filteredCategories);
+        }
+        private void ClearSearch()
+        {
+            searchBox.Text = "";
+            categoryListView.Items.Clear();
+
+            LoadFromDataBase(categories);
         }
         private void searchButton_Click(object sender, EventArgs e)
         {

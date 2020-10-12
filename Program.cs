@@ -16,7 +16,7 @@ namespace HMI_Lab3
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PriceList());
+            Application.Run(new PriceListForm());
         }
     }
 }
