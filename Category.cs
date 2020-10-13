@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace HMI_Lab3
 {
+    [Serializable]
     class Category
     {
         private string name;

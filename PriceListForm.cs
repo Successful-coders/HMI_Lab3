@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HMI_Lab3
@@ -24,7 +24,7 @@ namespace HMI_Lab3
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            InitStartItems();
+            LoadFromDataBase();
 
             InitListView(categories);
 
@@ -311,6 +311,10 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 
             categoryListView.Refresh();
         }
+        private void PriceListForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            SaveToDataBase();
+        }
         #endregion
 
         #region DataBaseWork
@@ -367,6 +371,36 @@ MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 new Item("Фарфоровая", 350),
                 new Item("Золотая", 350),
             }));
+        }
+        private void SaveToDataBase()
+        {
+            string directoryPath = "DataBase";
+            string filePath = Path.Combine(directoryPath, "categories.json");
+
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            using (StreamWriter file = File.CreateText(filePath))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, categories);
+            }
+        }
+        private void LoadFromDataBase()
+        {
+            string directoryPath = "DataBase";
+            string filePath = Path.Combine(directoryPath, "categories.json");
+
+            if (File.Exists(filePath))
+            {
+                categories = JsonConvert.DeserializeObject<List<Category>>(File.ReadAllText(filePath));
+            }
+            else
+            {
+                InitStartItems();
+            }
         }
         #endregion
 

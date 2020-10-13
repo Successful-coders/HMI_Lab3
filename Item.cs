@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace HMI_Lab3
 {
+    [Serializable]
     class Item
     {
         private string name;
