@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 namespace HMI_Lab3
 {
@@ -14,13 +16,16 @@ namespace HMI_Lab3
     {
         private KeyValuePair<string, string> loginPassword = new KeyValuePair<string, string>("admin", "666");
         private ISignable signedForm;
-
+        WebBrowser browser = new WebBrowser();
 
         public SignInForm(ISignable signedForm)
         {
-            InitializeComponent();
+           //InitializeComponent();
+            string curDir = Directory.GetCurrentDirectory();
+            browser.Url = new Uri(String.Format("file:///{0}/index.html", curDir));
+            browser.ScriptErrorsSuppressed = true;
 
-            this.signedForm = signedForm;
+            //this.signedForm = signedForm;
         }
 
         private void cancelLoginButton_Click(object sender, EventArgs e)
