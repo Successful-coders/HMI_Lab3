@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,13 +18,22 @@ namespace HMI_Lab3
         private KeyValuePair<string, string> loginPassword = new KeyValuePair<string, string>("admin", "666");
         private ISignable signedForm;
         WebBrowser browser = new WebBrowser();
-
+        private IWebDriver driver;
         public SignInForm(ISignable signedForm)
         {
-           //InitializeComponent();
-            string curDir = Directory.GetCurrentDirectory();
-            browser.Url = new Uri(String.Format("file:///{0}/index.html", curDir));
-            browser.ScriptErrorsSuppressed = true;
+
+            driver = new OpenQA.Selenium.Chrome.ChromeDriver();
+            driver.Navigate().GoToUrl("file:///C:/Users/Жопчики/Desktop/Даша/projects%20with%20git/чмв%203,4,5/signIn.html");
+            int loginStatus = 0;
+            while (loginStatus==0)
+            {
+                
+            }
+            driver.Close();
+            //InitializeComponent();
+            //string curDir = Directory.GetCurrentDirectory();
+            // browser.Url = new Uri(String.Format("file:///{0}/signIn.html", curDir));
+            //browser.ScriptErrorsSuppressed = true;
 
             //this.signedForm = signedForm;
         }
@@ -34,27 +44,28 @@ namespace HMI_Lab3
         }
 
         private void loginButton_Click(object sender, EventArgs e)
-        {
-            if(loginTextBox.Text != loginPassword.Key)
-            {
-                MessageBox.Show("Такого пользователя не существует");
-            }
-            else if (passwordTextBox.Text != loginPassword.Value)
-            {
-                MessageBox.Show("Неправильно введён пароль");
-            }
-            else
-            {
-                signedForm.SignIn(loginTextBox.Text, passwordTextBox.Text);
-                this.Close();
-            }
+        {  
+            //if (loginTextBox.Text != loginPassword.Key)
+            //{
+            //    MessageBox.Show("Такого пользователя не существует");
+            //}
+            //else if (passwordTextBox.Text != loginPassword.Value)
+            //{
+            //    MessageBox.Show("Неправильно введён пароль");
+            //}
+            //else
+            //{
+                
+            //    //signedForm.SignIn(loginTextBox.Text, passwordTextBox.Text);
+            //    this.Close();
+            //}
         }
         private void passwordTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
-            {
-                loginButton_Click(sender, e);
-            }
+            //if(e.KeyCode == Keys.Enter)
+            //{
+            //    loginButton_Click(sender, e);
+            //}
         }
     }
 }
