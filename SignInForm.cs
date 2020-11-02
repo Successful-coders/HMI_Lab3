@@ -23,7 +23,7 @@ namespace HMI_Lab3
         {
 
             driver = new OpenQA.Selenium.Chrome.ChromeDriver();
-            driver.Navigate().GoToUrl("file:///C:/Users/Жопчики/Desktop/Даша/projects%20with%20git/чмв%203,4,5/signIn.html");
+            driver.Navigate().GoToUrl("http://login:81/loginb.php");
             int loginStatus = 0;
             while (loginStatus==0)
             {
